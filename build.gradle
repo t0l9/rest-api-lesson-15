@@ -1,0 +1,53 @@
+import org.gradle.api.tasks.testing.Test
+
+plugins {
+    id 'java-library'
+    id("io.qameta.allure") version "2.11.2"
+}
+
+def allureVersion = "2.21.0",
+    selenideVersion = "7.8.1"
+
+allure {
+    report {
+        version.set(allureVersion)
+    }
+    adapter {
+        aspectjWeaver.set(true)
+        frameworks {
+            junit5 {
+                adapterVersion.set(allureVersion)
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation(
+            'org.aspectj:aspectjrt:1.9.22',
+            'org.aspectj:aspectjweaver:1.9.22',
+            "com.codeborne:selenide:$selenideVersion",
+            "org.junit.jupiter:junit-jupiter:5.10.0",
+            "org.slf4j:slf4j-simple:2.0.7",
+            "com.github.javafaker:javafaker:1.0.2",
+            "io.qameta.allure:allure-selenide:2.29.1",
+            "io.rest-assured:rest-assured:5.3.1"
+    )
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+}
+
+
