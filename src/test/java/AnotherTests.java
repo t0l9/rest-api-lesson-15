@@ -1,3 +1,5 @@
+import io.qameta.allure.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
@@ -8,7 +10,11 @@ import static org.hamcrest.Matchers.is;
 public class AnotherTests extends TestBase{
 
 
-    @Test
+    @Test()
+    @Feature("Проверка выбранного юзера")
+    @Story("API тесты")
+    @Owner("Kolyshkin A.S.")
+    @Severity(SeverityLevel.NORMAL)
     void singleUserTest() {
         Integer userId = 2;
         String userEmail = "janet.weaver@reqres.in";
@@ -29,7 +35,11 @@ public class AnotherTests extends TestBase{
                 .body("support.text", is(supportText));
     }
 
-    @Test
+    @Test()
+    @Feature("Проверка на отсутсвие выбранного юзера")
+    @Story("API тесты")
+    @Owner("Kolyshkin A.S.")
+    @Severity(SeverityLevel.NORMAL)
     void singleUserNotFoundTest() {
         Integer userId = 23;
 
@@ -45,7 +55,11 @@ public class AnotherTests extends TestBase{
 
 
 
-    @Test
+    @Test()
+    @Feature("Регистрация нового юзера")
+    @Story("API тесты")
+    @Owner("Kolyshkin A.S.")
+    @Severity(SeverityLevel.NORMAL)
     void createUserTest() {
 
         String newUser = "{\n" +
@@ -69,7 +83,11 @@ public class AnotherTests extends TestBase{
 
     }
 
-    @Test
+    @Test()
+    @Feature("Обновление информации выбранного юзера")
+    @Story("API тесты")
+    @Owner("Kolyshkin A.S.")
+    @Severity(SeverityLevel.NORMAL)
     void updateUserTest() {
 
         String newUser = "{\n" +
@@ -95,7 +113,11 @@ public class AnotherTests extends TestBase{
 
 
 
-    @Test
+    @Test()
+    @Feature("Удаление выбранного юзера")
+    @Story("API тесты")
+    @Owner("Kolyshkin A.S.")
+    @Severity(SeverityLevel.NORMAL)
     void deleteUserTest() {
         Integer userId = 2;
 
