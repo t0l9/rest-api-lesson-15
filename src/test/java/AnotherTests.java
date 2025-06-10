@@ -41,9 +41,10 @@ public class AnotherTests extends TestBase{
     @Owner("Kolyshkin A.S.")
     @Severity(SeverityLevel.NORMAL)
     void singleUserNotFoundTest() {
-        Integer userId = 23;
+        Integer userId = 234;
 
         given()
+                .header("x-api-key", "reqres-free-v1")
                 .log().uri()
                 .when()
                 .get(baseUrl + "users/" + userId)
