@@ -10,9 +10,9 @@ import static io.restassured.filter.log.LogDetail.BODY;
 import static io.restassured.filter.log.LogDetail.STATUS;
 import static io.restassured.http.ContentType.JSON;
 
-public class SingleUserSpec {
+public class CreateUserSpec {
 
-    public static RequestSpecification SingleUserRequestSpec = with()
+    public static RequestSpecification SingleUserCreateRequestSpec = with()
             .filter(withCustomTemplates())
             .log().uri()
             .log().body()
@@ -22,14 +22,20 @@ public class SingleUserSpec {
             .baseUri("https://reqres.in/")
             .basePath("/api/users/");
 
-    public static ResponseSpecification SingleUserResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification SingleUserCreateResponseSpec = new ResponseSpecBuilder()
+            .expectStatusCode(201)
+            .log(STATUS)
+            .log(BODY)
+            .build();
+
+    public static ResponseSpecification SingleUserUpdateResponseSpec = new ResponseSpecBuilder()
             .expectStatusCode(200)
             .log(STATUS)
             .log(BODY)
             .build();
 
-    public static ResponseSpecification SingleUserNegativeResponseSpec = new ResponseSpecBuilder()
-            .expectStatusCode(404)
+    public static ResponseSpecification SingleUserDeleteResponseSpec = new ResponseSpecBuilder()
+            .expectStatusCode(204)
             .log(STATUS)
             .log(BODY)
             .build();

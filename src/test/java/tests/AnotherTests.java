@@ -1,16 +1,14 @@
 package tests;
 
 import io.qameta.allure.*;
-import models.lombok.CreateUserTestModel;
-import models.lombok.DeleteUserTestModel;
-import models.lombok.SingleUserTestModel;
+import models.lombok.*;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Configuration.baseUrl;
-import static helpers.CustomAllureListener.withCustomTemplates;
+import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.*;
+import static specs.CreateUserSpec.*;
+import static specs.SingleUserSpec.*;
 
 public class AnotherTests extends TestBase{
 
@@ -22,29 +20,36 @@ public class AnotherTests extends TestBase{
     @Severity(SeverityLevel.NORMAL)
     void singleUserTest() {
 
-        SingleUserTestModel data = new SingleUserTestModel();
-        data.setUserEmail("janet.weaver@reqres.in");
-        data.setUserId(2);
-        data.setSupportText("Tired of writing endless social media content? Let Content Caddy generate it for you.");
-        data.setSupportUrl("https://contentcaddy.io?utm_source=reqres&utm_medium=json&utm_campaign=referral");
+        SupportUserModel supportUserModelData = new SupportUserModel();
+        DataUserModel dataUserModel = new DataUserModel();
+        dataUserModel.setEmail("janet.weaver@reqres.in");
+        dataUserModel.setId(2);
+        supportUserModelData.setText("Tired of writing endless social media content? Let Content Caddy generate it for you.");
+        supportUserModelData.setUrl("https://contentcaddy.io?utm_source=reqres&utm_medium=json&utm_campaign=referral");
 
 
-        given()
-                .header("x-api-key", "reqres-free-v1")
-                .filter(withCustomTemplates())
-                .log().uri()
-                .log().body()
-                .log().headers()
+
+        SingleUserTestModel response =
+                step("Make response", () -> given(SingleUserRequestSpec)
                 .when()
-                .get(data.getUserId().toString())
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("data.id", is(data.getUserId()))
-                .body("data.email", is(data.getUserEmail()))
-                .body("support.url", is(data.getSupportUrl()))
-                .body("support.text", is(data.getSupportText()));
+                .get(dataUserModel.getId().toString())
+                        .then()
+                        .spec(SingleUserResponseSpec)
+                        .extract().as(SingleUserTestModel.class));
+
+
+        step("Check response", () -> {
+            assertEquals(2, response.getData().getId());
+            assertEquals("janet.weaver@reqres.in", response.getData().getEmail());
+            assertEquals("Janet", response.getData().getFirst_name());
+            assertEquals("Weaver", response.getData().getLast_name());
+
+            assertEquals("https://contentcaddy.io?utm_source=reqres&utm_medium=json&utm_campaign=referral",
+                    response.getSupport().getUrl());
+            assertEquals("Tired of writing endless social media content? Let Content Caddy generate it for you.",
+                    response.getSupport().getText());
+        });
+
     }
 
 
@@ -56,27 +61,22 @@ public class AnotherTests extends TestBase{
     @Severity(SeverityLevel.NORMAL)
     void singleUserNotFoundTest() {
 
-        SingleUserTestModel data = new SingleUserTestModel();
-        data.setUserId(244);
+        DataUserModel dataUserModel = new DataUserModel();
+        dataUserModel.setId(244);
 
+        SingleUserTestModel response =
+                step("Make response", () -> given(SingleUserRequestSpec)
+                        .when()
+                        .get(dataUserModel.getId().toString())
+                        .then()
+                        .spec(SingleUserNegativeResponseSpec)
+                        .extract().as(SingleUserTestModel.class));
 
-        given()
-                .header("x-api-key", "reqres-free-v1")
-                .filter(withCustomTemplates())
-                .log().uri()
-                .log().body()
-                .log().headers()
-                .when()
-                .get(baseUrl + "users/" + data.getUserId())
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(404);
     }
 
 
 
-    @Test()
+    @Test
     @Feature("Регистрация нового юзера")
     @Story("API тесты")
     @Owner("Kolyshkin A.S.")
@@ -84,27 +84,26 @@ public class AnotherTests extends TestBase{
     void createUserTest() {
 
         CreateUserTestModel newUser = new CreateUserTestModel();
-        newUser.setName("morpheus");
-        newUser.setJob("leader");
+        newUser.setName("Anatoliy");
+        newUser.setJob("QA");
 
-        given()
-                .header("x-api-key", "reqres-free-v1")
-                .filter(withCustomTemplates())
-                .log().uri()
-                .log().body()
-                .log().headers()
-                .body(newUser)
-                .contentType(JSON)
-                .when()
-                .post(baseUrl + "users")
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(201)
-                .body("name", is(newUser.getName()))
-                .body("job", is(newUser.getJob()));
+        CreateUserResponseModel response =
+                step("Make response", () -> given(SingleUserCreateRequestSpec)
+                        .body(newUser)
+                        .when()
+                        .post()
+                        .then()
+                        .spec(SingleUserCreateResponseSpec)
+                        .extract().as(CreateUserResponseModel.class));
 
+        step("Check response", () -> {
+            assertEquals(newUser.getName(), response.getName());
+            assertEquals(newUser.getJob(), response.getJob());
+            assertNotNull(response.getId());
+            assertNotNull(response.getCreatedAt());
+        });
     }
+
 
     @Test()
     @Feature("Обновление информации выбранного юзера")
@@ -113,56 +112,45 @@ public class AnotherTests extends TestBase{
     @Severity(SeverityLevel.NORMAL)
     void updateUserTest() {
 
-
         CreateUserTestModel newUser = new CreateUserTestModel();
         newUser.setName("morpheus");
         newUser.setJob("zion resident");
 
 
-        given()
-                .header("x-api-key", "reqres-free-v1")
-                .filter(withCustomTemplates())
-                .log().uri()
-                .log().body()
-                .log().headers()
-                .body(newUser)
-                .contentType(JSON)
-                .when()
-                .put(baseUrl + "users/3")
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("name", is(newUser.getName()))
-                .body("job", is(newUser.getJob()));
+        CreateUserUpdateModel response =
+                step("Make response", () -> given(SingleUserCreateRequestSpec)
+                        .body(newUser)
+                        .when()
+                        .put("/3")
+                        .then()
+                        .spec(SingleUserUpdateResponseSpec)
+                        .extract().as(CreateUserUpdateModel.class));
+
+        step("Check response", () -> {
+            assertEquals(newUser.getName(), response.getName());
+            assertEquals(newUser.getJob(), response.getJob());
+            assertNotNull(response.getUpdatedAt());
+        });
 
     }
 
 
 
-    @Test()
+    @Test
     @Feature("Удаление выбранного юзера")
     @Story("API тесты")
     @Owner("Kolyshkin A.S.")
     @Severity(SeverityLevel.NORMAL)
     void deleteUserTest() {
 
-        DeleteUserTestModel userId = new DeleteUserTestModel();
+        DeleteUserRequestTestModel userId = new DeleteUserRequestTestModel();
         userId.setUserId(2);
 
-
-        given()
-                .header("x-api-key", "reqres-free-v1")
-                .filter(withCustomTemplates())
-                .log().uri()
-                .log().body()
-                .log().headers()
+        step("Make response", () -> given(SingleUserCreateRequestSpec)
                 .when()
-                .delete(baseUrl + "users/" + userId.getUserId())
+                .delete(userId.getUserId().toString())
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(204);
+                .spec(SingleUserDeleteResponseSpec));
     }
 
 }

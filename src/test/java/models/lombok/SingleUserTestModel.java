@@ -4,8 +4,7 @@ import lombok.Data;
 
 @Data
 public class SingleUserTestModel {
-    Integer userId;
-    String userEmail;
-    String supportUrl;
-    String supportText;
+    private DataUserModel data;
+    private SupportUserModel support;
+
 }

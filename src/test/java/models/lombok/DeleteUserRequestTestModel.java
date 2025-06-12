@@ -3,6 +3,6 @@ package models.lombok;
 import lombok.Data;
 
 @Data
-public class DeleteUserTestModel {
+public class DeleteUserRequestTestModel {
     Integer userId;
 }
