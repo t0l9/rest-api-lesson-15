@@ -14,9 +14,7 @@ public class LoginSpec {
 
     public static RequestSpecification registerRequestSpec = with()
             .filter(withCustomTemplates())
-            .log().uri()
-            .log().body()
-            .log().headers()
+            .log().all()
             .header("x-api-key", "reqres-free-v1")
             .contentType(JSON)
             .baseUri("https://reqres.in/")
