@@ -4,8 +4,6 @@ import helpers.CustomAllureListener;
 import io.qameta.allure.restassured.AllureRestAssured;
 import models.lombok.LoginBodyLombokModel;
 import models.lombok.LoginResponseLombokModel;
-import models.pojo.LoginBodyModel;
-import models.pojo.LoginResponseModel;
 import org.junit.jupiter.api.Test;
 
 import static helpers.CustomAllureListener.withCustomTemplates;
@@ -29,8 +27,6 @@ public class LoginTests {
                 step("Make response", () -> given(registerRequestSpec)
 
                 .body(authData)
-
-
                 .when()
                 .post()
 

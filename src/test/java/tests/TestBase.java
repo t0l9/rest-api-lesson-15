@@ -10,13 +10,6 @@ public class TestBase {
 
     @BeforeAll
     static void beforeAll(){
-
         Configuration.baseUrl = "https://reqres.in/api/";
-    }
-
-    @BeforeEach
-    void addAllureListener(){
-
-        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
     }
 }

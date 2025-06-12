@@ -1,6 +1,9 @@
 package tests;
 
 import io.qameta.allure.*;
+import models.lombok.CreateUserTestModel;
+import models.lombok.DeleteUserTestModel;
+import models.lombok.SingleUserTestModel;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
@@ -18,35 +21,13 @@ public class AnotherTests extends TestBase{
     @Owner("Kolyshkin A.S.")
     @Severity(SeverityLevel.NORMAL)
     void singleUserTest() {
-        Integer userId = 2;
-        String userEmail = "janet.weaver@reqres.in";
-        String supportUrl = "https://contentcaddy.io?utm_source=reqres&utm_medium=json&utm_campaign=referral";
-        String supportText = "Tired of writing endless social media content? Let Content Caddy generate it for you.";
 
-        given()
-                .filter(withCustomTemplates())
-                .log().uri()
-                .log().body()
-                .log().headers()
-                .when()
-                .get(baseUrl + "users/" + userId)
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("data.id", is(userId))
-                .body("data.email", is(userEmail))
-                .body("support.url", is(supportUrl))
-                .body("support.text", is(supportText));
-    }
+        SingleUserTestModel data = new SingleUserTestModel();
+        data.setUserEmail("janet.weaver@reqres.in");
+        data.setUserId(2);
+        data.setSupportText("Tired of writing endless social media content? Let Content Caddy generate it for you.");
+        data.setSupportUrl("https://contentcaddy.io?utm_source=reqres&utm_medium=json&utm_campaign=referral");
 
-    @Test()
-    @Feature("Проверка на отсутсвие выбранного юзера")
-    @Story("API тесты")
-    @Owner("Kolyshkin A.S.")
-    @Severity(SeverityLevel.NORMAL)
-    void singleUserNotFoundTest() {
-        Integer userId = 234;
 
         given()
                 .header("x-api-key", "reqres-free-v1")
@@ -55,7 +36,38 @@ public class AnotherTests extends TestBase{
                 .log().body()
                 .log().headers()
                 .when()
-                .get(baseUrl + "users/" + userId)
+                .get(data.getUserId().toString())
+                .then()
+                .log().status()
+                .log().body()
+                .statusCode(200)
+                .body("data.id", is(data.getUserId()))
+                .body("data.email", is(data.getUserEmail()))
+                .body("support.url", is(data.getSupportUrl()))
+                .body("support.text", is(data.getSupportText()));
+    }
+
+
+
+    @Test()
+    @Feature("Проверка на отсутсвие выбранного юзера")
+    @Story("API тесты")
+    @Owner("Kolyshkin A.S.")
+    @Severity(SeverityLevel.NORMAL)
+    void singleUserNotFoundTest() {
+
+        SingleUserTestModel data = new SingleUserTestModel();
+        data.setUserId(244);
+
+
+        given()
+                .header("x-api-key", "reqres-free-v1")
+                .filter(withCustomTemplates())
+                .log().uri()
+                .log().body()
+                .log().headers()
+                .when()
+                .get(baseUrl + "users/" + data.getUserId())
                 .then()
                 .log().status()
                 .log().body()
@@ -71,10 +83,9 @@ public class AnotherTests extends TestBase{
     @Severity(SeverityLevel.NORMAL)
     void createUserTest() {
 
-        String newUser = "{\n" +
-                "    \"name\": \"morpheus\",\n" +
-                "    \"job\": \"leader\"\n" +
-                "}";
+        CreateUserTestModel newUser = new CreateUserTestModel();
+        newUser.setName("morpheus");
+        newUser.setJob("leader");
 
         given()
                 .header("x-api-key", "reqres-free-v1")
@@ -90,8 +101,8 @@ public class AnotherTests extends TestBase{
                 .log().status()
                 .log().body()
                 .statusCode(201)
-                .body("name", is("morpheus"))
-                .body("job", is("leader"));
+                .body("name", is(newUser.getName()))
+                .body("job", is(newUser.getJob()));
 
     }
 
@@ -102,10 +113,11 @@ public class AnotherTests extends TestBase{
     @Severity(SeverityLevel.NORMAL)
     void updateUserTest() {
 
-        String newUser = "{\n" +
-                "    \"name\": \"morpheus\",\n" +
-                "    \"job\": \"zion resident\"\n" +
-                "}";
+
+        CreateUserTestModel newUser = new CreateUserTestModel();
+        newUser.setName("morpheus");
+        newUser.setJob("zion resident");
+
 
         given()
                 .header("x-api-key", "reqres-free-v1")
@@ -121,8 +133,8 @@ public class AnotherTests extends TestBase{
                 .log().status()
                 .log().body()
                 .statusCode(200)
-                .body("name", is("morpheus"))
-                .body("job", is("zion resident"));
+                .body("name", is(newUser.getName()))
+                .body("job", is(newUser.getJob()));
 
     }
 
@@ -134,7 +146,10 @@ public class AnotherTests extends TestBase{
     @Owner("Kolyshkin A.S.")
     @Severity(SeverityLevel.NORMAL)
     void deleteUserTest() {
-        Integer userId = 2;
+
+        DeleteUserTestModel userId = new DeleteUserTestModel();
+        userId.setUserId(2);
+
 
         given()
                 .header("x-api-key", "reqres-free-v1")
@@ -143,7 +158,7 @@ public class AnotherTests extends TestBase{
                 .log().body()
                 .log().headers()
                 .when()
-                .delete(baseUrl + "users/" + userId)
+                .delete(baseUrl + "users/" + userId.getUserId())
                 .then()
                 .log().status()
                 .log().body()
