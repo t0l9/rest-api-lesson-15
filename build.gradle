@@ -38,7 +38,8 @@ dependencies {
             "com.github.javafaker:javafaker:1.0.2",
             "io.qameta.allure:allure-selenide:2.29.1",
             "io.rest-assured:rest-assured:$restAssuredVersion",
-            "io.rest-assured:json-schema-validator:$restAssuredVersion"
+            "io.rest-assured:json-schema-validator:$restAssuredVersion",
+            "io.qameta.allure:allure-rest-assured:$allureVersion",
     )
 }
 

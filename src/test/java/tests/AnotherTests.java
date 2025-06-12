@@ -4,6 +4,7 @@ import io.qameta.allure.*;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
+import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
@@ -23,7 +24,10 @@ public class AnotherTests extends TestBase{
         String supportText = "Tired of writing endless social media content? Let Content Caddy generate it for you.";
 
         given()
+                .filter(withCustomTemplates())
                 .log().uri()
+                .log().body()
+                .log().headers()
                 .when()
                 .get(baseUrl + "users/" + userId)
                 .then()
@@ -46,7 +50,10 @@ public class AnotherTests extends TestBase{
 
         given()
                 .header("x-api-key", "reqres-free-v1")
+                .filter(withCustomTemplates())
                 .log().uri()
+                .log().body()
+                .log().headers()
                 .when()
                 .get(baseUrl + "users/" + userId)
                 .then()
@@ -71,9 +78,12 @@ public class AnotherTests extends TestBase{
 
         given()
                 .header("x-api-key", "reqres-free-v1")
+                .filter(withCustomTemplates())
+                .log().uri()
+                .log().body()
+                .log().headers()
                 .body(newUser)
                 .contentType(JSON)
-                .log().uri()
                 .when()
                 .post(baseUrl + "users")
                 .then()
@@ -99,9 +109,12 @@ public class AnotherTests extends TestBase{
 
         given()
                 .header("x-api-key", "reqres-free-v1")
+                .filter(withCustomTemplates())
+                .log().uri()
+                .log().body()
+                .log().headers()
                 .body(newUser)
                 .contentType(JSON)
-                .log().uri()
                 .when()
                 .put(baseUrl + "users/3")
                 .then()
@@ -125,7 +138,10 @@ public class AnotherTests extends TestBase{
 
         given()
                 .header("x-api-key", "reqres-free-v1")
+                .filter(withCustomTemplates())
                 .log().uri()
+                .log().body()
+                .log().headers()
                 .when()
                 .delete(baseUrl + "users/" + userId)
                 .then()
