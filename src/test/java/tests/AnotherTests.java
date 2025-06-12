@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static specs.CreateUserSpec.*;
 import static specs.SingleUserSpec.*;
 
-public class AnotherTests extends TestBase{
+public class AnotherTests {
 
 
     @Test()
@@ -26,8 +26,6 @@ public class AnotherTests extends TestBase{
         dataUserModel.setId(2);
         supportUserModelData.setText("Tired of writing endless social media content? Let Content Caddy generate it for you.");
         supportUserModelData.setUrl("https://contentcaddy.io?utm_source=reqres&utm_medium=json&utm_campaign=referral");
-
-
 
         SingleUserTestModel response =
                 step("Make response", () -> given(SingleUserRequestSpec)
