@@ -3,11 +3,11 @@ package tests;
 import io.qameta.allure.*;
 import models.lombok.*;
 import org.junit.jupiter.api.Test;
+import specs.SingleUserSpec;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
-import static specs.CreateUserSpec.*;
 import static specs.SingleUserSpec.*;
 
 public class AnotherTests extends TestBase{
@@ -86,7 +86,7 @@ public class AnotherTests extends TestBase{
         newUser.setJob("QA");
 
         CreateUserResponseModel response =
-                step("Make response", () -> given(SingleUserCreateRequestSpec)
+                step("Make response", () -> given(SingleUserSpec.SingleUserCreateRequestSpec)
                         .body(newUser)
                         .when()
                         .post("/users")
