@@ -1,7 +1,6 @@
 import io.qameta.allure.*;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Configuration.baseUrl;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
@@ -23,7 +22,7 @@ public class AnotherTests extends TestBase{
         given()
                 .log().uri()
                 .when()
-                .get(baseUrl + "users/" + userId)
+                .get("users/" + userId)
                 .then()
                 .log().status()
                 .log().body()
@@ -46,7 +45,7 @@ public class AnotherTests extends TestBase{
                 .header("x-api-key", "reqres-free-v1")
                 .log().uri()
                 .when()
-                .get(baseUrl + "users/" + userId)
+                .get("users/" + userId)
                 .then()
                 .log().status()
                 .log().body()
@@ -73,7 +72,7 @@ public class AnotherTests extends TestBase{
                 .contentType(JSON)
                 .log().uri()
                 .when()
-                .post(baseUrl + "users")
+                .post("users")
                 .then()
                 .log().status()
                 .log().body()
@@ -101,7 +100,7 @@ public class AnotherTests extends TestBase{
                 .contentType(JSON)
                 .log().uri()
                 .when()
-                .put(baseUrl + "users/3")
+                .put("users/3")
                 .then()
                 .log().status()
                 .log().body()
@@ -125,7 +124,7 @@ public class AnotherTests extends TestBase{
                 .header("x-api-key", "reqres-free-v1")
                 .log().uri()
                 .when()
-                .delete(baseUrl + "users/" + userId)
+                .delete("users/" + userId)
                 .then()
                 .log().status()
                 .log().body()
