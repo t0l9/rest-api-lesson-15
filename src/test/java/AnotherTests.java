@@ -20,6 +20,7 @@ public class AnotherTests extends TestBase{
         String supportText = "Tired of writing endless social media content? Let Content Caddy generate it for you.";
 
         given()
+                .header("x-api-key", "reqres-free-v1")
                 .log().uri()
                 .when()
                 .get("users/" + userId)
@@ -87,7 +88,7 @@ public class AnotherTests extends TestBase{
     @Story("API тесты")
     @Owner("Kolyshkin A.S.")
     @Severity(SeverityLevel.NORMAL)
-    void updateUserTest() {
+    void updatePutUserTest() {
 
         String newUser = "{\n" +
                 "    \"name\": \"morpheus\",\n" +
@@ -107,6 +108,34 @@ public class AnotherTests extends TestBase{
                 .statusCode(200)
                 .body("name", is("morpheus"))
                 .body("job", is("zion resident"));
+
+    }
+
+    @Test()
+    @Feature("Обновление информации выбранного юзера")
+    @Story("API тесты")
+    @Owner("Kolyshkin A.S.")
+    @Severity(SeverityLevel.NORMAL)
+    void updatePatchUserTest() {
+
+        String updateUser = "{\n" +
+                "    \"name\": \"morpheus\",\n" +
+                "    \"job\": \"QA engineer\"\n" +
+                "}";
+
+        given()
+                .header("x-api-key", "reqres-free-v1")
+                .body(updateUser)
+                .contentType(JSON)
+                .log().uri()
+                .when()
+                .patch("users/3")
+                .then()
+                .log().status()
+                .log().body()
+                .statusCode(200)
+                .body("name", is("morpheus"))
+                .body("job", is("QA engineer"));
 
     }
 
