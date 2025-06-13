@@ -16,9 +16,7 @@ public class LoginSpec {
             .filter(withCustomTemplates())
             .log().all()
             .header("x-api-key", "reqres-free-v1")
-            .contentType(JSON)
-            .baseUri("https://reqres.in/")
-            .basePath("api/login");
+            .contentType(JSON);
 
 
     public static ResponseSpecification loginResponseSpec = new ResponseSpecBuilder()

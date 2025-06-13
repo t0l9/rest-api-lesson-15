@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static specs.CreateUserSpec.*;
 import static specs.SingleUserSpec.*;
 
-public class AnotherTests {
+public class AnotherTests extends TestBase{
 
 
     @Test()
@@ -30,7 +30,7 @@ public class AnotherTests {
         SingleUserTestModel response =
                 step("Make response", () -> given(SingleUserRequestSpec)
                 .when()
-                .get(dataUserModel.getId().toString())
+                .get("/users/" + dataUserModel.getId().toString())
                         .then()
                         .spec(SingleUserResponseSpec)
                         .extract().as(SingleUserTestModel.class));
@@ -65,7 +65,7 @@ public class AnotherTests {
         SingleUserTestModel response =
                 step("Make response", () -> given(SingleUserRequestSpec)
                         .when()
-                        .get(dataUserModel.getId().toString())
+                        .get("/users/" + dataUserModel.getId().toString())
                         .then()
                         .spec(SingleUserNegativeResponseSpec)
                         .extract().as(SingleUserTestModel.class));
@@ -89,7 +89,7 @@ public class AnotherTests {
                 step("Make response", () -> given(SingleUserCreateRequestSpec)
                         .body(newUser)
                         .when()
-                        .post()
+                        .post("/users")
                         .then()
                         .spec(SingleUserCreateResponseSpec)
                         .extract().as(CreateUserResponseModel.class));
@@ -119,7 +119,7 @@ public class AnotherTests {
                 step("Make response", () -> given(SingleUserCreateRequestSpec)
                         .body(newUser)
                         .when()
-                        .put("/3")
+                        .put("/users/3")
                         .then()
                         .spec(SingleUserUpdateResponseSpec)
                         .extract().as(CreateUserUpdateModel.class));
@@ -146,7 +146,7 @@ public class AnotherTests {
 
         step("Make response", () -> given(SingleUserCreateRequestSpec)
                 .when()
-                .delete(userId.getUserId().toString())
+                .delete("/users/"+ userId.getUserId().toString())
                 .then()
                 .spec(SingleUserDeleteResponseSpec));
     }

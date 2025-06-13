@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.LoginSpec.loginResponseSpec;
 import static specs.LoginSpec.registerRequestSpec;
 
-public class LoginTests {
+public class LoginTests extends TestBase {
 
     @Test
     void successfulLoginTest() {
@@ -24,7 +24,7 @@ public class LoginTests {
 
                 .body(authData)
                 .when()
-                .post()
+                .post("/login")
 
                 .then()
                         .spec(loginResponseSpec)
