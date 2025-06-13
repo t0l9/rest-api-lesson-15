@@ -119,7 +119,7 @@ public class AnotherTests extends TestBase{
     void updatePatchUserTest() {
 
         String updateUser = "{\n" +
-                "    \"name\": \"morpheus\",\n" +
+                "    \"name\": \"Anatoliy\",\n" +
                 "    \"job\": \"QA engineer\"\n" +
                 "}";
 
