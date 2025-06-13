@@ -19,7 +19,7 @@ public class LoginSpec {
             .contentType(JSON);
 
 
-    public static ResponseSpecification loginResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification loginResponseSpec200 = new ResponseSpecBuilder()
             .expectStatusCode(200)
             .log(STATUS)
             .log(BODY)

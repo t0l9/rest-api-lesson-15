@@ -32,7 +32,7 @@ public class AnotherTests extends TestBase{
                 .when()
                 .get("/users/" + dataUserModel.getId().toString())
                         .then()
-                        .spec(SingleUserResponseSpec)
+                        .spec(SingleUserResponseSpec200)
                         .extract().as(SingleUserTestModel.class));
 
 
@@ -67,7 +67,7 @@ public class AnotherTests extends TestBase{
                         .when()
                         .get("/users/" + dataUserModel.getId().toString())
                         .then()
-                        .spec(SingleUserNegativeResponseSpec)
+                        .spec(SingleUserNegativeResponseSpec404)
                         .extract().as(SingleUserTestModel.class));
 
     }
@@ -91,7 +91,7 @@ public class AnotherTests extends TestBase{
                         .when()
                         .post("/users")
                         .then()
-                        .spec(SingleUserCreateResponseSpec)
+                        .spec(SingleUserCreateResponseSpec201)
                         .extract().as(CreateUserResponseModel.class));
 
         step("Check response", () -> {
@@ -121,7 +121,7 @@ public class AnotherTests extends TestBase{
                         .when()
                         .put("/users/3")
                         .then()
-                        .spec(SingleUserUpdateResponseSpec)
+                        .spec(SingleUserUpdateResponseSpec200)
                         .extract().as(CreateUserUpdateModel.class));
 
         step("Check response", () -> {
@@ -148,7 +148,7 @@ public class AnotherTests extends TestBase{
                 .when()
                 .delete("/users/"+ userId.getUserId().toString())
                 .then()
-                .spec(SingleUserDeleteResponseSpec));
+                .spec(SingleUserDeleteResponseSpec204));
     }
 
 }

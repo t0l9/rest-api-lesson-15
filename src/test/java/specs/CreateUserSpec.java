@@ -20,19 +20,19 @@ public class CreateUserSpec {
             .baseUri("https://reqres.in/")
             .basePath("/api/users/");
 
-    public static ResponseSpecification SingleUserCreateResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification SingleUserCreateResponseSpec201 = new ResponseSpecBuilder()
             .expectStatusCode(201)
             .log(STATUS)
             .log(BODY)
             .build();
 
-    public static ResponseSpecification SingleUserUpdateResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification SingleUserUpdateResponseSpec200 = new ResponseSpecBuilder()
             .expectStatusCode(200)
             .log(STATUS)
             .log(BODY)
             .build();
 
-    public static ResponseSpecification SingleUserDeleteResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification SingleUserDeleteResponseSpec204 = new ResponseSpecBuilder()
             .expectStatusCode(204)
             .log(STATUS)
             .log(BODY)

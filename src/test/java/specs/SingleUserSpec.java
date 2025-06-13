@@ -20,13 +20,13 @@ public class SingleUserSpec {
             .baseUri("https://reqres.in/")
             .basePath("/api/users/");
 
-    public static ResponseSpecification SingleUserResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification SingleUserResponseSpec200 = new ResponseSpecBuilder()
             .expectStatusCode(200)
             .log(STATUS)
             .log(BODY)
             .build();
 
-    public static ResponseSpecification SingleUserNegativeResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification SingleUserNegativeResponseSpec404 = new ResponseSpecBuilder()
             .expectStatusCode(404)
             .log(STATUS)
             .log(BODY)

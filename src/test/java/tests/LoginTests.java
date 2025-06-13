@@ -7,7 +7,7 @@ import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static specs.LoginSpec.loginResponseSpec;
+import static specs.LoginSpec.loginResponseSpec200;
 import static specs.LoginSpec.registerRequestSpec;
 
 public class LoginTests extends TestBase {
@@ -27,7 +27,7 @@ public class LoginTests extends TestBase {
                 .post("/login")
 
                 .then()
-                        .spec(loginResponseSpec)
+                        .spec(loginResponseSpec200)
                 .extract().as(LoginResponseLombokModel.class));
 
 
