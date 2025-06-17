@@ -19,14 +19,14 @@ public class LoginTests extends TestBase {
         authData.setEmail("eve.holt@reqres.in");
 
         LoginResponseLombokModel response =
-                step("Make response", () -> given(registerRequestSpec)
+                step("Make response", () -> given(RequestSpec)
 
                 .body(authData)
                 .when()
                 .post("/login")
 
                 .then()
-                        .spec(loginResponseSpec200)
+                        .spec(ResponseSpec200)
                 .extract().as(LoginResponseLombokModel.class));
 
 

@@ -28,11 +28,11 @@ public class AnotherTests extends TestBase{
         supportUserModelData.setUrl("https://contentcaddy.io?utm_source=reqres&utm_medium=json&utm_campaign=referral");
 
         SingleUserTestModel response =
-                step("Make response", () -> given(SingleUserRequestSpec)
+                step("Make response", () -> given(RequestSpec)
                 .when()
                 .get("/users/" + dataUserModel.getId().toString())
                         .then()
-                        .spec(SingleUserResponseSpec200)
+                        .spec(ResponseSpec200)
                         .extract().as(SingleUserTestModel.class));
 
 
@@ -63,7 +63,7 @@ public class AnotherTests extends TestBase{
         dataUserModel.setId(244);
 
         SingleUserTestModel response =
-                step("Make response", () -> given(SingleUserRequestSpec)
+                step("Make response", () -> given(RequestSpec)
                         .when()
                         .get("/users/" + dataUserModel.getId().toString())
                         .then()
@@ -86,7 +86,7 @@ public class AnotherTests extends TestBase{
         newUser.setJob("QA");
 
         CreateUserResponseModel response =
-                step("Make response", () -> given(SingleUserSpec.SingleUserCreateRequestSpec)
+                step("Make response", () -> given(SingleUserSpec.RequestSpec)
                         .body(newUser)
                         .when()
                         .post("/users")
@@ -116,12 +116,12 @@ public class AnotherTests extends TestBase{
 
 
         CreateUserUpdateModel response =
-                step("Make response", () -> given(SingleUserCreateRequestSpec)
+                step("Make response", () -> given(RequestSpec)
                         .body(newUser)
                         .when()
                         .put("/users/3")
                         .then()
-                        .spec(SingleUserUpdateResponseSpec200)
+                        .spec(ResponseSpec200)
                         .extract().as(CreateUserUpdateModel.class));
 
         step("Check response", () -> {
@@ -144,7 +144,7 @@ public class AnotherTests extends TestBase{
         DeleteUserRequestTestModel userId = new DeleteUserRequestTestModel();
         userId.setUserId(2);
 
-        step("Make response", () -> given(SingleUserCreateRequestSpec)
+        step("Make response", () -> given(RequestSpec)
                 .when()
                 .delete("/users/"+ userId.getUserId().toString())
                 .then()
